@@ -1,6 +1,12 @@
 import User from "../models/User.js"
+import jwt from 'jsonwebtoken';
 
 
+const generateToken = (userId) => {
+  return jwt.sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE || "7d",
+  })
+}
 
 export const register = async (req, res) => {
   try {
@@ -30,7 +36,7 @@ export const register = async (req, res) => {
     await user.save()
 
  
-   
+    const token = generateToken(user._id)
 
     res.status(201).json({
       message: "Inscription réussie",
