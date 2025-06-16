@@ -13,6 +13,11 @@ export const register = async (req, res) => {
     const { firstName, lastName, email, phone, password, role, vehicleInfo } = req.body
 
    
+    if (!firstName || !lastName || !email || !phone || !password || !role) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+   
     const existingUser = await User.findOne({ email })
     if (existingUser) {
       return res.status(400).json({ message: "Cet email est déjà utilisé" })

@@ -92,9 +92,9 @@ const userSchema = new mongoose.Schema({
   
 
 
-   userSchema.index({ email: 1 })
-   userSchema.index({ role: 1 })
-   userSchema.index({ isActive: 1 })
+  //  userSchema.index({ email: 1 })
+  //  userSchema.index({ role: 1 })
+  //  userSchema.index({ isActive: 1 })
 
 
    userSchema.pre("save", async function (next) {
@@ -120,11 +120,11 @@ const userSchema = new mongoose.Schema({
   })
   
   
-  userSchema.methods.toJSON = function () {
-    const user = this.toObject()
-    delete user.password
-    return user
-  }
+  // userSchema.methods.toJSON = function () {
+  //   const user = this.toObject()
+  //   delete user.password
+  //   return user
+  // }
 
 const User =    mongoose.model("User" , userSchema);
 export default User ;
