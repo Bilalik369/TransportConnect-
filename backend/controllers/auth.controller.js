@@ -104,4 +104,28 @@ export const login = async (req, res) => {
   }
 };
 
+export const getMyProfile  = async(req , res)=>{
+  try {
+    const user = await User.findById(req.user._id).select("-password")
+    res.json({
+      user :{
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        isVerified: user.isVerified,
+        avatar: user.avatar,
+        address: user.address,
+        vehicleInfo: user.vehicleInfo,
+        stats: user.stats,
+        lastLogin: user.lastLogin,
+      }
+    })
 
+  } catch (error) {
+    console.error("Erreur récupération profil:", error)
+    res.status(500).json({ message: "Erreur lors de la récupération du profil" })
+  }
+}
