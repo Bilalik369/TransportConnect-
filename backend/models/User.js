@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
 
 
 const userSchema = new mongoose.Schema({
@@ -88,12 +89,42 @@ const userSchema = new mongoose.Schema({
   )
 
 
-  const generateToken = (userId) => {
-    return jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRE || "7d",
-    })
-  }
+  
 
+
+   userSchema.index({ email: 1 })
+   userSchema.index({ role: 1 })
+   userSchema.index({ isActive: 1 })
+
+
+   userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next()
+  
+    try {
+      const salt = await bcrypt.genSalt(12)
+      this.password = await bcrypt.hash(this.password, salt)
+      next()
+    } catch (error) {
+      next(error)
+    }
+  })
+  
+  
+  userSchema.methods.comparePassword = async function (candidatePassword) {
+    return bcrypt.compare(candidatePassword, this.password)
+  }
+  
+  
+  userSchema.virtual("fullName").get(function () {
+    return `${this.firstName} ${this.lastName}`
+  })
+  
+  
+  userSchema.methods.toJSON = function () {
+    const user = this.toObject()
+    delete user.password
+    return user
+  }
 
 const User =    mongoose.model("User" , userSchema);
 export default User ;
