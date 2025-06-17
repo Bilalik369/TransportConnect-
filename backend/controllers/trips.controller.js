@@ -124,3 +124,20 @@ export const getTripById = async (req, res) => {
   }
 }
 
+export const createTrip = async (req, res) => {
+  try {
+    const tripData = {
+      ...req.body,
+      driver: req.user._id,
+    }
+
+    const trip = new Trip(tripData)
+    await trip.save()
+    await trip.populate("driver", "firstName lastName avatar stats")
+
+    res.status(201).json({ message: "Trajet créé avec succès", trip })
+  } catch (error) {
+    console.error("Erreur création trajet:", error)
+    res.status(500).json({ message: "Erreur lors de la création du trajet" })
+  }
+}
