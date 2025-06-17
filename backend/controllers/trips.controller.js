@@ -141,3 +141,23 @@ export const createTrip = async (req, res) => {
     res.status(500).json({ message: "Erreur lors de la création du trajet" })
   }
 }
+
+export const updateTrip = async (req, res) => {
+  try {
+    const trip = await Trip.findById(req.params.id)
+    if (!trip) return res.status(404).json({ message: "Trajet non trouvé" })
+    if (trip.driver.toString() !== req.user._id.toString())
+      return res.status(403).json({ message: "Non autorisé à modifier ce trajet" })
+    if (trip.acceptedRequests.length > 0)
+      return res.status(400).json({ message: "Impossible de modifier un trajet avec des demandes acceptées" })
+
+    Object.assign(trip, req.body)
+    await trip.save()
+    await trip.populate("driver", "firstName lastName avatar stats")
+
+    res.json({ message: "Trajet modifié avec succès", trip })
+  } catch (error) {
+    console.error("Erreur modification trajet:", error)
+    res.status(500).json({ message: "Erreur lors de la modification du trajet" })
+  }
+}
