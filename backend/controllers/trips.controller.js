@@ -103,3 +103,24 @@ export const getMyTrips = async (req, res) => {
   }
 }
 
+export const getTripById = async (req, res) => {
+  try {
+    const trip = await Trip.findById(req.params.id)
+      .populate("driver", "firstName lastName avatar stats isVerified phone")
+      .populate({
+        path: "requests",
+        populate: {
+          path: "sender",
+          select: "firstName lastName avatar stats",
+        },
+      })
+
+    if (!trip) return res.status(404).json({ message: "Trajet non trouvé" })
+
+    res.json({ trip })
+  } catch (error) {
+    console.error("Erreur récupération trajet:", error)
+    res.status(500).json({ message: "Erreur lors de la récupération du trajet" })
+  }
+}
+

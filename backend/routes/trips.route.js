@@ -1,9 +1,10 @@
 import express from "express"
-import { getTrips, getMyTrips } from "../controllers/trips.controller.js"
+import { getTrips, getMyTrips, getTripById } from "../controllers/trips.controller.js"
 
-const route = express.Router();
+const router = express.Router();
 
-route.get("/", getTrips);
-route.get("/my-trips" , getMyTrips)
+router.get("/", getTrips);
+router.get("/my-trips" , getMyTrips)
+router.get("/:id",  getTripById)
 
-export default route;
+export default router;
