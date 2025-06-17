@@ -109,7 +109,15 @@ const tripSchema = new mongoose.Schema(
 )
 
 
-
+tripSchema.pre("save", function (next) {
+  if (this.departureDate <= new Date()) {
+    return next(new Error("La date de départ doit être dans le futur"))
+  }
+  if (this.arrivalDate <= this.departureDate) {
+    return next(new Error("La date d'arrivée doit être après la date de départ"))
+  }
+  next()
+})
 
 const Trip = mongoose.model("Trip" , tripSchema);
 export default Trip
