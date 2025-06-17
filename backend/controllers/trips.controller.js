@@ -72,3 +72,34 @@ export const getTrips = async (req, res) => {
     res.status(500).json({ message: "Erreur lors de la récupération des trajets" })
   }
 }
+
+export const getMyTrips = async (req, res) => {
+  try {
+    const { status, page = 1, limit = 10 } = req.query
+
+    const filter = { driver: req.user._id }
+    if (status) filter.status = status
+
+    const trips = await Trip.find(filter)
+      .populate("requests", "sender cargo status createdAt")
+      .populate("acceptedRequests", "sender cargo pickup delivery status")
+      .sort({ createdAt: -1 })
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+
+    const total = await Trip.countDocuments(filter)
+
+    res.json({
+      trips,
+      pagination: {
+        currentPage: parseInt(page),
+        totalPages: Math.ceil(total / limit),
+        totalTrips: total,
+      },
+    })
+  } catch (error) {
+    console.error("Erreur récupération mes trajets:", error)
+    res.status(500).json({ message: "Erreur lors de la récupération de vos trajets" })
+  }
+}
+
