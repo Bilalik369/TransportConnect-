@@ -117,7 +117,21 @@ const requestSchema = new mongoose.Schema(
       timestamps: true,
     },
   )
-
+ 
+  requestSchema.pre("save", async function (next) {
+    if (this.isNew && !this.price) {
+      try {
+        const Trip = mongoose.model("Trip")
+        const trip = await Trip.findById(this.trip)
+        if (trip) {
+          this.price = this.cargo.weight * trip.pricePerKg
+        }
+      } catch (error) {
+        return next(error)
+      }
+    }
+    next()
+  })
 
   const Request =mongoose.model("Request" , requestSchema);
   export default Request

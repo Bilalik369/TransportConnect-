@@ -16,6 +16,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/trips", tripsRoutes)
 
 app.listen(PORT, () => {
-  console.log(` Serveur en marche sur le port ${PORT}`)
   connectDB()
+  console.log(` Serveur en marche sur le port ${PORT}`)
+ 
 })

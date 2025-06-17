@@ -56,5 +56,28 @@ const reviewSchema = new mongoose.Schema(
   )
 
 
+  reviewSchema.index({ reviewer: 1, reviewee: 1, request: 1 }, { unique: true })
+reviewSchema.index({ reviewee: 1 })
+reviewSchema.index({ rating: 1 })
+
+// Middleware pour mettre à jour les statistiques de l'utilisateur évalué
+reviewSchema.post("save", async function () {
+  try {
+    const User = mongoose.model("User")
+    const reviews = await mongoose.model("Review").find({ reviewee: this.reviewee })
+
+    const totalRatings = reviews.length
+    const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / totalRatings
+
+    await User.findByIdAndUpdate(this.reviewee, {
+      "stats.totalRatings": totalRatings,
+      "stats.averageRating": Math.round(averageRating * 10) / 10,
+    })
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour des statistiques:", error)
+  }
+})
+
+
   const Review = mongoose.model("Review" , reviewSchema);
   export default Review
