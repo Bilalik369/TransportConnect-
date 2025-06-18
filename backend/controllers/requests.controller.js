@@ -71,5 +71,36 @@ export const getReceivedRequests = async (req, res) => {
       console.error("Erreur récupération demandes reçues:", error)
       res.status(500).json({ message: "Erreur lors de la récupération des demandes reçues" })
     }
-  }
+}
   
+export const getRequestById = async (req, res) => {
+    try {
+      const request = await Request.findById(req.params.id)
+        .populate("sender", "firstName lastName avatar stats phone")
+        .populate({
+          path: "trip",
+          populate: {
+            path: "driver",
+            select: "firstName lastName avatar stats phone",
+          },
+        })
+  
+      if (!request) {
+        return res.status(404).json({ message: "Demande non trouvée" })
+      }
+  
+   
+      const isOwner = request.sender._id.toString() === req.user._id.toString()
+      const isDriver = request.trip.driver._id.toString() === req.user._id.toString()
+      const isAdmin = req.user.role === "admin"
+  
+      if (!isOwner && !isDriver && !isAdmin) {
+        return res.status(403).json({ message: "Accès refusé" })
+      }
+  
+      res.json({ request })
+    } catch (error) {
+      console.error("Erreur récupération demande:", error)
+      res.status(500).json({ message: "Erreur lors de la récupération de la demande" })
+    }
+  }
