@@ -210,3 +210,80 @@ export const createRequest = async (req, res) => {
   }
 }
 
+export const acceptRequest = async (req, res) => {
+    try {
+      const { message } = req.body
+  
+      const request = await Request.findById(req.params.id).populate("sender").populate("trip")
+  
+      if (!request) {
+        return res.status(404).json({ message: "Demande non trouvée" })
+      }
+  
+      
+      if (request.trip.driver.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: "Non autorisé à accepter cette demande" })
+      }
+  
+      if (request.status !== "pending") {
+        return res.status(400).json({ message: "Cette demande ne peut plus être acceptée" })
+      }
+  
+    
+      if (request.cargo.weight > request.trip.availableCapacity.weight) {
+        return res.status(400).json({
+          message: "Capacité insuffisante pour accepter cette demande",
+        })
+      }
+  
+      
+      request.status = "accepted"
+      request.driverResponse = {
+        message: message || "Demande acceptée",
+        respondedAt: new Date(),
+      }
+      await request.save()
+  
+      
+      const trip = await Trip.findById(request.trip._id)
+      trip.acceptedRequests.push(request._id)
+      trip.availableCapacity.weight -= request.cargo.weight
+      await trip.save()
+  
+     
+      await User.findByIdAndUpdate(req.user._id, {
+        $inc: { "stats.totalRequests": 1 },
+      })
+  
+      try {
+        await sendNotificationEmail(
+          request.sender.email,
+          "Demande acceptée",
+          `Votre demande de transport a été acceptée par ${req.user.firstName} ${req.user.lastName}.`,
+        )
+      } catch (emailError) {
+        console.error("Erreur envoi email:", emailError)
+      }
+  
+      
+      const io = req.app.get("io")
+      io.to(`user_${request.sender._id}`).emit("request_accepted", {
+        requestId: request._id,
+        driver: {
+          name: `${req.user.firstName} ${req.user.lastName}`,
+          avatar: req.user.avatar,
+        },
+        message: request.driverResponse.message,
+      })
+  
+      res.json({
+        message: "Demande acceptée avec succès",
+        request,
+      })
+    } catch (error) {
+      console.error("Erreur acceptation demande:", error)
+      res.status(500).json({ message: "Erreur lors de l'acceptation de la demande" })
+    }
+  }
+  
+
