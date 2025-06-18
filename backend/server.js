@@ -6,6 +6,7 @@ import tripsRoutes from "./routes/trips.route.js"
 import http from "http"
 import { Server } from "socket.io"
 import chatHandler from "./socket/chatHandler.js"
+import requestRoutes from "./routes/requests.route.js"
 
 dotenv.config()
 
@@ -28,6 +29,7 @@ app.use(express.json())
 
 app.use("/api/auth", authRoutes)
 app.use("/api/trips", tripsRoutes)
+app.use("/api/requests" , requestRoutes)
 
 
 server.listen(PORT, () => {
