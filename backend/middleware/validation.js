@@ -8,7 +8,7 @@ export const handleValidationErrors = (req, res, next) => {
         errors: errors.array(),
       })
     }
-    next()
+   next()
   }
   
 
