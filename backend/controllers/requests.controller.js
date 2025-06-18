@@ -379,6 +379,90 @@ export const acceptRequest = async (req, res) => {
       res.status(500).json({ message: "Erreur lors de l'annulation de la demande" })
     }
   }
+  export const confirmPickup = async (req, res) => {
+    try {
+      const request = await Request.findById(req.params.id).populate("trip")
+  
+      if (!request) {
+        return res.status(404).json({ message: "Demande non trouvée" })
+      }
+  
+      if (request.trip.driver.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: "Non autorisé" })
+      }
+  
+      if (request.status !== "accepted") {
+        return res.status(400).json({ message: "La demande doit être acceptée pour confirmer la collecte" })
+      }
+  
+      request.status = "in_transit"
+      request.tracking.pickupConfirmed = {
+        confirmed: true,
+        confirmedAt: new Date(),
+        confirmedBy: req.user._id,
+      }
+      request.tracking.inTransit = {
+        confirmed: true,
+        confirmedAt: new Date(),
+      }
+      await request.save()
+  
+      res.json({
+        message: "Collecte confirmée avec succès",
+        request,
+      })
+    } catch (error) {
+      console.error("Erreur confirmation collecte:", error)
+      res.status(500).json({ message: "Erreur lors de la confirmation de collecte" })
+    }
+  }
   
   
+  export const confirmDelivery = async (req, res) => {
+    try {
+      const { signature } = req.body
+      const request = await Request.findById(req.params.id).populate("trip").populate("sender")
+  
+      if (!request) {
+        return res.status(404).json({ message: "Demande non trouvée" })
+      }
+  
+      const isDriver = request.trip.driver.toString() === req.user._id.toString()
+      const isSender = request.sender._id.toString() === req.user._id.toString()
+  
+      if (!isDriver && !isSender) {
+        return res.status(403).json({ message: "Non autorisé" })
+      }
+  
+      if (request.status !== "in_transit") {
+        return res.status(400).json({ message: "Le colis doit être en transit pour confirmer la livraison" })
+      }
+  
+      request.status = "delivered"
+      request.tracking.delivered = {
+        confirmed: true,
+        confirmedAt: new Date(),
+        confirmedBy: req.user._id,
+        signature: signature || null,
+      }
+      await request.save()
+  
+      
+      if (isDriver) {
+        await Trip.findByIdAndUpdate(request.trip._id, {
+          $inc: { totalEarnings: request.price },
+        })
+      }
+  
+      res.json({
+        message: "Livraison confirmée avec succès",
+        request,
+      })
+    } catch (error) {
+      console.error("Erreur confirmation livraison:", error)
+      res.status(500).json({ message: "Erreur lors de la confirmation de livraison" })
+    }
+  }
+  
+
 
