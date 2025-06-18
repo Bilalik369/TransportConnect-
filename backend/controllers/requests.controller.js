@@ -341,5 +341,44 @@ export const acceptRequest = async (req, res) => {
       res.status(500).json({ message: "Erreur lors du refus de la demande" })
     }
   }
+
+  export const cancelRequest = async (req, res) => {
+    try {
+      const request = await Request.findById(req.params.id).populate("trip")
+  
+      if (!request) {
+        return res.status(404).json({ message: "Demande non trouvée" })
+      }
+  
+      if (request.sender.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: "Non autorisé à annuler cette demande" })
+      }
+  
+      if (!["pending", "accepted"].includes(request.status)) {
+        return res.status(400).json({ message: "Cette demande ne peut plus être annulée" })
+      }
+  
+      const oldStatus = request.status
+      request.status = "cancelled"
+      await request.save()
+  
+   
+      if (oldStatus === "accepted") {
+        await Trip.findByIdAndUpdate(request.trip._id, {
+          $pull: { acceptedRequests: request._id },
+          $inc: { "availableCapacity.weight": request.cargo.weight },
+        })
+      }
+  
+      res.json({
+        message: "Demande annulée avec succès",
+        request,
+      })
+    } catch (error) {
+      console.error("Erreur annulation demande:", error)
+      res.status(500).json({ message: "Erreur lors de l'annulation de la demande" })
+    }
+  }
+  
   
 

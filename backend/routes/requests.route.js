@@ -1,5 +1,5 @@
 import express from "express"
-import {getUserRequests , getReceivedRequests , getRequestById , createRequest ,acceptRequest, rejectRequest} from "../controllers/requests.controller.js"
+import {getUserRequests , getReceivedRequests , getRequestById , createRequest ,acceptRequest, rejectRequest, cancelRequest} from "../controllers/requests.controller.js"
 import {authorizeRoles , authenticateToken} from "../middleware/auth.middleware.js";
 import {validateRequest , validateObjectId } from "../middleware/validation.js"
 
@@ -15,7 +15,7 @@ router.get("/:id", validateObjectId("id"), getRequestById)
 router.post("/", authenticateToken ,authorizeRoles("expediteur"), validateRequest, createRequest)
 router.put("/:id/accept", validateObjectId("id"), acceptRequest)
 router.put("/:id/reject", validateObjectId("id"), rejectRequest)
-
+router.put("/:id/cancel", validateObjectId("id"), cancelRequest)
 
 
 export default router
