@@ -2,6 +2,7 @@ import Request from "../models/Request.js";
 import User from "../models/User.js";
 import Chat from "../models/Chat.js";
 import Trip from "../models/Trip.js";
+import {sendNotificationEmail} from "../utils/emailService.js"
 
 
 
@@ -283,6 +284,61 @@ export const acceptRequest = async (req, res) => {
     } catch (error) {
       console.error("Erreur acceptation demande:", error)
       res.status(500).json({ message: "Erreur lors de l'acceptation de la demande" })
+    }
+  }
+
+  export const rejectRequest = async (req, res) => {
+    try {
+      const { message } = req.body
+  
+      const request = await Request.findById(req.params.id).populate("sender").populate("trip")
+  
+      if (!request) {
+        return res.status(404).json({ message: "Demande non trouvée" })
+      }
+  
+      if (request.trip.driver.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: "Non autorisé à refuser cette demande" })
+      }
+  
+      if (request.status !== "pending") {
+        return res.status(400).json({ message: "Cette demande ne peut plus être refusée" })
+      }
+  
+      request.status = "rejected"
+      request.driverResponse = {
+        message: message || "Demande refusée",
+        respondedAt: new Date(),
+      }
+      await request.save()
+  
+      
+      try {
+        await sendNotificationEmail(
+          request.sender.email,
+          "Demande refusée",
+          `Votre demande de transport a été refusée par ${req.user.firstName} ${req.user.lastName}.`,
+        )
+      } catch (emailError) {
+        console.error("Erreur envoi email:", emailError)
+      }
+  
+      const io = req.app.get("io")
+      io.to(`user_${request.sender._id}`).emit("request_rejected", {
+        requestId: request._id,
+        driver: {
+          name: `${req.user.firstName} ${req.user.lastName}`,
+        },
+        message: request.driverResponse.message,
+      })
+  
+      res.json({
+        message: "Demande refusée",
+        request,
+      })
+    } catch (error) {
+      console.error("Erreur refus demande:", error)
+      res.status(500).json({ message: "Erreur lors du refus de la demande" })
     }
   }
   

@@ -2,7 +2,7 @@
 import nodemailer from "nodemailer"
 import dotenv from "dotenv"
 
-dotenv.config({ path: "../.env" });  
+dotenv.config();  
 
 
 
@@ -10,7 +10,7 @@ dotenv.config({ path: "../.env" });
 // console.log("EMAIL_PORT:", process.env.EMAIL_PORT);
 // console.log("EMAIL_SECURE:", process.env.EMAIL_SECURE);
 // console.log("EMAIL_USER:", process.env.EMAIL_USER);
-console.log("EMAIL_HOST from env:", process.env.EMAIL_HOST);
+// console.log("EMAIL_HOST from env:", process.env.EMAIL_HOST);
 
 const createTransporter = () => {
   return nodemailer.createTransport({
