@@ -60,7 +60,7 @@ const reviewSchema = new mongoose.Schema(
 reviewSchema.index({ reviewee: 1 })
 reviewSchema.index({ rating: 1 })
 
-// Middleware pour mettre à jour les statistiques de l'utilisateur évalué
+
 reviewSchema.post("save", async function () {
   try {
     const User = mongoose.model("User")
