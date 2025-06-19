@@ -1,5 +1,6 @@
 import dotenv from "dotenv"
-dotenv.config()
+dotenv.config({ path: "../.env" })
+
 
 console.log("EMAIL_HOST:", process.env.EMAIL_HOST);
 console.log("EMAIL_USER:", process.env.EMAIL_USER);
@@ -9,8 +10,8 @@ console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
 import { sendWelcomeEmail } from "../utils/emailService.js"
 
 const user = {
-  email: "bilal11iken@gmail.com",
-  firstName: "",
+  email: "zakariamoumni9@gmail.com",
+  firstName: " abdlkrim",
   role: "conducteur",
 }
 
