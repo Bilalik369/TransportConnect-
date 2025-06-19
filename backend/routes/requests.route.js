@@ -8,11 +8,12 @@ import {validateRequest , validateObjectId } from "../middleware/validation.js"
 
 const router = express.Router();
 
-
+router.use(authenticateToken);
+  
 router.get("/", getUserRequests)
 router.get("/received", authorizeRoles("conducteur"), getReceivedRequests)
 router.get("/:id", validateObjectId("id"), getRequestById)
-router.post("/", authenticateToken ,authorizeRoles("expediteur"), validateRequest, createRequest)
+router.post("/" ,authorizeRoles("expediteur"), validateRequest, createRequest)
 router.put("/:id/accept", validateObjectId("id"), acceptRequest)
 router.put("/:id/reject", validateObjectId("id"), rejectRequest)
 router.put("/:id/cancel", validateObjectId("id"), cancelRequest)
