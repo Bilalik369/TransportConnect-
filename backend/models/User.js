@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema({
         street: String,
         city: String,
         postalCode: String,
-        country: { type: String, default: "France" },
+        country: { type: String, default: "Maroc" },
       },
       vehicleInfo: {
         type: {

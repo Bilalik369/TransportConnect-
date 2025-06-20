@@ -1,4 +1,5 @@
 import mongoose  from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 
 const tripSchema = new mongoose.Schema(
@@ -118,6 +119,8 @@ tripSchema.pre("save", function (next) {
   }
   next()
 })
+
+tripSchema.plugin(mongoosePaginate);
 
 const Trip = mongoose.model("Trip" , tripSchema);
 export default Trip
