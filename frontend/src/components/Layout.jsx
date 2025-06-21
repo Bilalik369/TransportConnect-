@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
@@ -37,7 +35,7 @@ const Layout = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Mobile sidebar */}
+    
       <div className={clsx("fixed inset-0 z-50 lg:hidden", sidebarOpen ? "block" : "hidden")}>
         <div className="fixed inset-0 bg-black bg-opacity-25" onClick={() => setSidebarOpen(false)} />
         <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl">
@@ -71,7 +69,7 @@ const Layout = ({ children }) => {
         </div>
       </div>
 
-      {/* Desktop sidebar */}
+    
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         <div className="flex flex-col flex-grow bg-white shadow-lg">
           <div className="flex items-center px-6 py-4 border-b">
@@ -129,9 +127,9 @@ const Layout = ({ children }) => {
         </div>
       </div>
 
-      {/* Main content */}
+    
       <div className="lg:pl-64">
-        {/* Top bar */}
+      
         <div className="sticky top-0 z-40 bg-white shadow-sm border-b lg:hidden">
           <div className="flex items-center justify-between px-4 py-3">
             <button onClick={() => setSidebarOpen(true)} className="text-text-secondary hover:text-primary">
@@ -147,7 +145,7 @@ const Layout = ({ children }) => {
           </div>
         </div>
 
-        {/* Page content */}
+       
         <main className="flex-1">{children}</main>
       </div>
     </div>

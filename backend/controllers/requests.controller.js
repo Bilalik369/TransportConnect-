@@ -8,6 +8,7 @@ import {sendNotificationEmail} from "../utils/emailService.js"
 
 
 export const getUserRequests = async (req, res) => {
+  
     try {
       const { status, page = 1, limit = 10 } = req.query
   
@@ -123,7 +124,7 @@ export const createRequest = async (req, res) => {
       return res.status(400).json({ message: "Ce trajet n'est plus disponible" })
     }
 
-    if (trip.driver._id.toString() === req.user._id.toString()) {
+    if  (trip.driver && trip.driver._id.toString() === req.user._id.toString()) {
       return res.status(400).json({ message: "Vous ne pouvez pas demander votre propre trajet" })
     }
 

@@ -41,7 +41,7 @@ const WelcomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-card-background">
-      {/* Header */}
+      
       <header className="container mx-auto px-6 py-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -64,7 +64,7 @@ const WelcomePage = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
+    
       <section className="container mx-auto px-6 py-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
@@ -100,8 +100,8 @@ const WelcomePage = () => {
           >
             <div className="bg-white rounded-3xl shadow-2xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-300">
               <div className="bg-gradient-to-r from-primary to-text-secondary rounded-2xl p-6 text-white mb-6">
-                <h3 className="text-2xl font-bold mb-2">Trajet Paris → Lyon</h3>
-                <p className="opacity-90">Départ: 15 Jan 2024, 08:00</p>
+                <h3 className="text-2xl font-bold mb-2">Trajet Beni mellal → Fes</h3>
+                <p className="opacity-90">Départ: 25 Jui 2025, 08:00</p>
                 <p className="opacity-90">Capacité: 500kg disponible</p>
               </div>
 
@@ -111,7 +111,7 @@ const WelcomePage = () => {
                     <span className="text-white font-bold">JD</span>
                   </div>
                   <div>
-                    <p className="font-semibold text-text-primary">Jean Dupont</p>
+                    <p className="font-semibold text-text-primary">Iken bilal</p>
                     <div className="flex items-center">
                       <Star className="w-4 h-4 text-yellow-400 fill-current" />
                       <span className="text-sm text-text-secondary ml-1">4.9</span>
@@ -119,7 +119,7 @@ const WelcomePage = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-primary">2.5€/kg</p>
+                  <p className="text-2xl font-bold text-primary">25DH/kg</p>
                   <p className="text-sm text-text-secondary">Prix compétitif</p>
                 </div>
               </div>
@@ -128,7 +128,7 @@ const WelcomePage = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+    
       <section className="bg-white py-20">
         <div className="container mx-auto px-6">
           <motion.div
@@ -167,7 +167,6 @@ const WelcomePage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="bg-gradient-to-r from-primary to-text-secondary py-20">
         <div className="container mx-auto px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
@@ -179,7 +178,7 @@ const WelcomePage = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/register">
-                <Button variant="secondary" size="large" className="bg-white text-primary hover:bg-gray-100">
+                <Button variant="secondary" size="large" className=" text-primary hover:bg-gray-100">
                   Créer un compte gratuit
                 </Button>
               </Link>

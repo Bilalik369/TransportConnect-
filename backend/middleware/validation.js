@@ -126,22 +126,44 @@ export const validateObjectId = (paramName) => [
 
 export const validateTripSearch = [
   query("departure")
-    .optional()
+    .optional({ checkFalsy: true })
     .trim()
     .isLength({ min: 2 })
     .withMessage("La ville de départ doit contenir au moins 2 caractères"),
+
   query("destination")
-    .optional()
+    .optional({ checkFalsy: true })
     .trim()
     .isLength({ min: 2 })
     .withMessage("La ville de destination doit contenir au moins 2 caractères"),
-  query("date").optional().isISO8601().withMessage("Format de date invalide"),
+
+  query("date")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .withMessage("Format de date invalide"),
+
   query("cargoType")
-    .optional()
-    .isIn(["fragile", "liquide", "dangereux", "alimentaire", "electronique", "textile", "mobilier", "autre"])
+    .optional({ checkFalsy: true })
+    .isIn([
+      "fragile", "liquide", "dangereux", "alimentaire",
+      "electronique", "textile", "mobilier", "autre"
+    ])
     .withMessage("Type de cargaison invalide"),
-  query("maxWeight").optional().isFloat({ min: 0.1 }).withMessage("Le poids maximum doit être supérieur à 0"),
-  query("page").optional().isInt({ min: 1 }).withMessage("Le numéro de page doit être supérieur à 0"),
-  query("limit").optional().isInt({ min: 1, max: 50 }).withMessage("La limite doit être entre 1 et 50"),
+
+  query("maxWeight")
+    .optional({ checkFalsy: true })
+    .isFloat({ min: 0.1 })
+    .withMessage("Le poids maximum doit être supérieur à 0"),
+
+  query("page")
+    .optional({ checkFalsy: true })
+    .isInt({ min: 1 })
+    .withMessage("Le numéro de page doit être supérieur à 0"),
+
+  query("limit")
+    .optional({ checkFalsy: true })
+    .isInt({ min: 1, max: 50 })
+    .withMessage("La limite doit être entre 1 et 50"),
+
   handleValidationErrors,
 ]
