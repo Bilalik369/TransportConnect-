@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useQuery } from "react-query"
@@ -109,7 +107,7 @@ const TripsPage = () => {
         )}
       </div>
 
-      {/* Filters */}
+     
       <Card className="p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-text-primary">Filtres de recherche</h3>
@@ -190,7 +188,7 @@ const TripsPage = () => {
         </motion.div>
       </Card>
 
-      {/* Results */}
+   
       <div>
         {isLoading ? (
           <div className="flex justify-center py-12">
@@ -206,7 +204,7 @@ const TripsPage = () => {
                 transition={{ duration: 0.3 }}
               >
                 <Card className="p-6 cursor-pointer" onClick={() => {}}>
-                  {/* Trip Header */}
+                
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-3">
                       <div className="flex items-center space-x-2">
@@ -217,14 +215,14 @@ const TripsPage = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-primary">{trip.pricePerKg}€/kg</div>
+                      <div className="text-2xl font-bold text-primary">{trip.pricePerKg}DH/kg</div>
                       <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(trip.status)}`}>
                         {getStatusLabel(trip.status)}
                       </span>
                     </div>
                   </div>
 
-                  {/* Trip Details */}
+                 
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="flex items-center space-x-2">
                       <Calendar className="w-4 h-4 text-text-secondary" />
@@ -238,7 +236,7 @@ const TripsPage = () => {
                     </div>
                   </div>
 
-                  {/* Cargo Types */}
+                
                   <div className="mb-4">
                     <div className="flex flex-wrap gap-2">
                       {trip.acceptedCargoTypes.slice(0, 3).map((type) => (
@@ -257,7 +255,7 @@ const TripsPage = () => {
                     </div>
                   </div>
 
-                  {/* Driver Info (for senders) */}
+            
                   {user?.role !== "conducteur" && (
                     <div className="flex items-center justify-between pt-4 border-t">
                       <div className="flex items-center space-x-3">
@@ -284,13 +282,12 @@ const TripsPage = () => {
                     </div>
                   )}
 
-                  {/* Trip Stats (for drivers) */}
                   {user?.role === "conducteur" && (
                     <div className="flex items-center justify-between pt-4 border-t">
                       <div className="flex items-center space-x-4 text-sm text-text-secondary">
                         <span>{trip.requests?.length || 0} demande(s)</span>
                         <span>{trip.acceptedRequests?.length || 0} acceptée(s)</span>
-                        <span>{trip.totalEarnings || 0}€ gagné(s)</span>
+                        <span>{trip.totalEarnings || 0}DH gagné(s)</span>
                       </div>
 
                       <Link to={`/trips/${trip._id}`}>

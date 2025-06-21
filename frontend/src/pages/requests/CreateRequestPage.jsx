@@ -1,4 +1,3 @@
-"use client"
 import { useParams, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { useQuery, useMutation, useQueryClient } from "react-query"
@@ -127,7 +126,7 @@ const CreateRequestPage = () => {
           </div>
           <div>
             <h3 className="font-medium text-text-primary">Prix</h3>
-            <p className="text-primary font-semibold">{trip.pricePerKg}€/kg</p>
+            <p className="text-primary font-semibold">{trip.pricePerKg}DH/kg</p>
           </div>
         </div>
       </Card>
@@ -219,7 +218,7 @@ const CreateRequestPage = () => {
             </div>
 
             <Input
-              label="Valeur déclarée (€) - Optionnel"
+              label="Valeur déclarée (DH) - Optionnel"
               type="number"
               step="0.01"
               placeholder="500.00"
@@ -231,7 +230,7 @@ const CreateRequestPage = () => {
           </div>
         </Card>
 
-        {/* Pickup Information */}
+        
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <MapPin className="w-6 h-6 text-primary mr-3" />
@@ -269,7 +268,7 @@ const CreateRequestPage = () => {
           </div>
         </Card>
 
-        {/* Delivery Information */}
+        
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <MapPin className="w-6 h-6 text-primary mr-3" />
@@ -307,7 +306,7 @@ const CreateRequestPage = () => {
           </div>
         </Card>
 
-        {/* Message */}
+     
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <User className="w-6 h-6 text-primary mr-3" />
@@ -324,7 +323,6 @@ const CreateRequestPage = () => {
           </div>
         </Card>
 
-        {/* Price Summary */}
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <Euro className="w-6 h-6 text-primary mr-3" />
@@ -338,16 +336,16 @@ const CreateRequestPage = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-text-secondary">Prix par kg:</span>
-              <span className="text-text-primary">{trip.pricePerKg}€</span>
+              <span className="text-text-primary">{trip.pricePerKg}DH</span>
             </div>
             <div className="border-t pt-2 flex justify-between">
               <span className="font-semibold text-text-primary">Total estimé:</span>
-              <span className="font-bold text-primary text-xl">{estimatedPrice}€</span>
+              <span className="font-bold text-primary text-xl">{estimatedPrice}DH</span>
             </div>
           </div>
         </Card>
 
-        {/* Submit */}
+       
         <div className="flex items-center justify-end space-x-4">
           <Button variant="outline" onClick={() => navigate(-1)}>
             Annuler

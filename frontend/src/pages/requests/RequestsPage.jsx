@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useQuery } from "react-query"
@@ -98,7 +96,7 @@ const RequestsPage = () => {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Header */}
+     
       <div>
         <h1 className="text-3xl font-bold text-text-primary">
           {user?.role === "conducteur" ? "Demandes reçues" : "Mes demandes"}
@@ -110,7 +108,7 @@ const RequestsPage = () => {
         </p>
       </div>
 
-      {/* Tabs */}
+     
       <Card className="p-4">
         <div className="flex flex-wrap gap-2">
           {tabs.map((tab) => (
@@ -129,7 +127,7 @@ const RequestsPage = () => {
         </div>
       </Card>
 
-      {/* Requests List */}
+     
       <div>
         {isLoading ? (
           <div className="flex justify-center py-12">
@@ -182,7 +180,7 @@ const RequestsPage = () => {
                       </div>
 
                       <div className="text-right ml-4">
-                        <div className="text-2xl font-bold text-primary">{request.price}€</div>
+                        <div className="text-2xl font-bold text-primary">{request.price}DH</div>
                         <div className="text-sm text-text-secondary">{request.cargo.weight}kg</div>
                       </div>
                     </div>

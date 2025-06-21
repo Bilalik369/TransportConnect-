@@ -1,5 +1,3 @@
-"use client"
-
 import { Link } from "react-router-dom"
 import { useQuery } from "react-query"
 import { motion } from "framer-motion"
@@ -13,7 +11,7 @@ import LoadingSpinner from "../../components/ui/LoadingSpinner"
 const DashboardPage = () => {
   const { user } = useAuth()
 
-  // Queries
+
   const { data: stats } = useQuery("user-stats", usersAPI.getStats)
   const { data: recentTrips, isLoading: tripsLoading } = useQuery("recent-trips", () =>
     user?.role === "conducteur" ? tripsAPI.getMyTrips({ limit: 5 }) : tripsAPI.getTrips({ limit: 5 }),
@@ -86,7 +84,7 @@ const DashboardPage = () => {
     },
     {
       title: "Messages",
-      value: "12", // TODO: Get from API
+      value: "12",
       icon: MessageCircle,
       color: "text-info",
     },
@@ -94,7 +92,7 @@ const DashboardPage = () => {
 
   return (
     <div className="p-6 space-y-8">
-      {/* Welcome Section */}
+      
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <div className="bg-gradient-to-r from-primary to-text-secondary rounded-2xl p-8 text-white">
           <h1 className="text-3xl font-bold mb-2">Bonjour {user?.firstName} ! 👋</h1>
@@ -116,7 +114,7 @@ const DashboardPage = () => {
         </div>
       </motion.div>
 
-      {/* Stats Cards */}
+     
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

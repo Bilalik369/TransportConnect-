@@ -1,5 +1,3 @@
-"use client"
-
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Truck, MessageCircle, Star, Shield, Clock, Users } from "lucide-react"
@@ -196,7 +194,7 @@ const WelcomePage = () => {
         </div>
       </section>
 
-      {/* Footer */}
+   
       <footer className="bg-text-dark text-white py-12">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">

@@ -1,4 +1,3 @@
-"use client"
 import { useParams, useNavigate, Link } from "react-router-dom"
 import { useQuery, useMutation, useQueryClient } from "react-query"
 import { ArrowLeft, Star } from "lucide-react"
@@ -72,7 +71,7 @@ const TripDetailPage = () => {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      {/* Header */}
+ 
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center">
           <Button variant="ghost" onClick={() => navigate(-1)} className="mr-4">
@@ -102,11 +101,11 @@ const TripDetailPage = () => {
         </div>
       </div>
 
-      {/* Trip Content */}
+ 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Content */}
+      
         <div className="lg:col-span-2 space-y-6">
-          {/* Route Information */}
+          
           <Card className="p-6">
             <h2 className="text-xl font-semibold text-text-primary mb-4">Itinéraire</h2>
             <div className="space-y-4">
@@ -127,7 +126,7 @@ const TripDetailPage = () => {
             </div>
           </Card>
 
-          {/* Capacity & Pricing */}
+          
           <Card className="p-6">
             <h2 className="text-xl font-semibold text-text-primary mb-4">Capacité et tarification</h2>
             <div className="grid grid-cols-2 gap-6">
@@ -141,12 +140,12 @@ const TripDetailPage = () => {
               </div>
               <div>
                 <h3 className="font-medium text-text-primary mb-2">Prix</h3>
-                <p className="text-2xl font-bold text-primary">{trip.pricePerKg}€/kg</p>
+                <p className="text-2xl font-bold text-primary">{trip.pricePerKg}DH/kg</p>
               </div>
             </div>
           </Card>
 
-          {/* Cargo Types */}
+      
           <Card className="p-6">
             <h2 className="text-xl font-semibold text-text-primary mb-4">Types de cargaison acceptés</h2>
             <div className="flex flex-wrap gap-2">
@@ -158,7 +157,7 @@ const TripDetailPage = () => {
             </div>
           </Card>
 
-          {/* Description */}
+         
           {trip.description && (
             <Card className="p-6">
               <h2 className="text-xl font-semibold text-text-primary mb-4">Description</h2>
@@ -166,7 +165,7 @@ const TripDetailPage = () => {
             </Card>
           )}
 
-          {/* Requests (for driver) */}
+          
           {isOwner && (
             <Card className="p-6">
               <h2 className="text-xl font-semibold text-text-primary mb-4">
@@ -195,7 +194,7 @@ const TripDetailPage = () => {
                       <p className="text-sm text-text-secondary mb-2">{request.cargo.description}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-text-secondary">
-                          {request.cargo.weight}kg - {request.price}€
+                          {request.cargo.weight}kg - {request.price}DH
                         </span>
                         <Link to={`/requests/${request._id}`}>
                           <Button size="small" variant="outline">
@@ -213,9 +212,9 @@ const TripDetailPage = () => {
           )}
         </div>
 
-        {/* Sidebar */}
+       
         <div className="space-y-6">
-          {/* Driver Info */}
+         
           <Card className="p-6">
             <h2 className="text-xl font-semibold text-text-primary mb-4">Conducteur</h2>
             <div className="flex items-center space-x-4 mb-4">
@@ -254,7 +253,7 @@ const TripDetailPage = () => {
             )}
           </Card>
 
-          {/* Trip Stats */}
+    
           <Card className="p-6">
             <h2 className="text-xl font-semibold text-text-primary mb-4">Statistiques</h2>
             <div className="space-y-3">
@@ -283,7 +282,7 @@ const TripDetailPage = () => {
               {isOwner && (
                 <div className="flex justify-between">
                   <span className="text-text-secondary">Gains totaux:</span>
-                  <span className="text-text-primary font-semibold">{trip.totalEarnings || 0}€</span>
+                  <span className="text-text-primary font-semibold">{trip.totalEarnings || 0}DH</span>
                 </div>
               )}
             </div>

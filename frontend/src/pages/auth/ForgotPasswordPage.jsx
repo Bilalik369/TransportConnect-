@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
@@ -22,8 +20,8 @@ const ForgotPasswordPage = () => {
   const onSubmit = async (data) => {
     setLoading(true)
     try {
-      // TODO: Implement forgot password API call
-      await new Promise((resolve) => setTimeout(resolve, 2000)) // Simulate API call
+      
+      await new Promise((resolve) => setTimeout(resolve, 2000)) 
       setEmailSent(true)
       toast.success("Email de réinitialisation envoyé !")
     } catch (error) {
@@ -41,7 +39,7 @@ const ForgotPasswordPage = () => {
         transition={{ duration: 0.6 }}
         className="w-full max-w-md"
       >
-        {/* Logo */}
+     
         <div className="text-center mb-8">
           <div className="inline-flex items-center space-x-3 mb-4">
             <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
@@ -55,7 +53,6 @@ const ForgotPasswordPage = () => {
           </p>
         </div>
 
-        {/* Form */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

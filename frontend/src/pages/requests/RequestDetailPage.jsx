@@ -216,20 +216,20 @@ const RequestDetailPage = () => {
                 </div>
                 <div>
                   <h3 className="font-medium text-text-primary">Prix</h3>
-                  <p className="text-primary font-semibold text-lg">{request.price}€</p>
+                  <p className="text-primary font-semibold text-lg">{request.price}DH</p>
                 </div>
               </div>
 
               {request.cargo.value && (
                 <div>
                   <h3 className="font-medium text-text-primary">Valeur déclarée</h3>
-                  <p className="text-text-secondary">{request.cargo.value}€</p>
+                  <p className="text-text-secondary">{request.cargo.value}DH</p>
                 </div>
               )}
             </div>
           </Card>
 
-          {/* Addresses */}
+          
           <Card className="p-6">
             <div className="flex items-center mb-4">
               <MapPin className="w-6 h-6 text-primary mr-3" />
@@ -267,7 +267,7 @@ const RequestDetailPage = () => {
             </div>
           </Card>
 
-          {/* Trip Information */}
+         
           <Card className="p-6">
             <h2 className="text-xl font-semibold text-text-primary mb-4">Trajet associé</h2>
             <div className="space-y-2">
@@ -286,7 +286,7 @@ const RequestDetailPage = () => {
             </div>
           </Card>
 
-          {/* Messages */}
+        
           {(request.message || request.driverResponse?.message) && (
             <Card className="p-6">
               <h2 className="text-xl font-semibold text-text-primary mb-4">Messages</h2>
@@ -310,7 +310,7 @@ const RequestDetailPage = () => {
             </Card>
           )}
 
-          {/* Tracking */}
+         
           {request.status !== "pending" && request.status !== "rejected" && request.status !== "cancelled" && (
             <Card className="p-6">
               <h2 className="text-xl font-semibold text-text-primary mb-4">Suivi</h2>
@@ -355,9 +355,9 @@ const RequestDetailPage = () => {
           )}
         </div>
 
-        {/* Sidebar */}
+       
         <div className="space-y-6">
-          {/* User Info */}
+          
           <Card className="p-6">
             <h2 className="text-xl font-semibold text-text-primary mb-4">{isDriver ? "Expéditeur" : "Conducteur"}</h2>
 
@@ -395,11 +395,11 @@ const RequestDetailPage = () => {
             )}
           </Card>
 
-          {/* Actions */}
+         
           <Card className="p-6">
             <h2 className="text-xl font-semibold text-text-primary mb-4">Actions</h2>
             <div className="space-y-3">
-              {/* Driver Actions */}
+              
               {isDriver && request.status === "pending" && (
                 <>
                   <Button className="w-full" onClick={handleAcceptRequest} loading={acceptRequestMutation.isLoading}>
@@ -428,7 +428,7 @@ const RequestDetailPage = () => {
                 </Button>
               )}
 
-              {/* Sender Actions */}
+              
               {isSender && (request.status === "pending" || request.status === "accepted") && (
                 <Button
                   variant="outline"

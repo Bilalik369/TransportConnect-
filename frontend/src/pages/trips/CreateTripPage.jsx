@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
@@ -74,7 +72,7 @@ const CreateTripPage = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      {/* Header */}
+     
       <div className="flex items-center mb-8">
         <Button variant="ghost" onClick={() => navigate(-1)} className="mr-4">
           <ArrowLeft className="w-4 h-4" />
@@ -86,7 +84,7 @@ const CreateTripPage = () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        {/* Route Information */}
+
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <MapPin className="w-6 h-6 text-primary mr-3" />
@@ -128,7 +126,7 @@ const CreateTripPage = () => {
           </div>
         </Card>
 
-        {/* Schedule */}
+      
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <Calendar className="w-6 h-6 text-primary mr-3" />
@@ -174,7 +172,7 @@ const CreateTripPage = () => {
           </div>
         </Card>
 
-        {/* Capacity */}
+     
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <Weight className="w-6 h-6 text-primary mr-3" />
@@ -230,7 +228,7 @@ const CreateTripPage = () => {
           </div>
         </Card>
 
-        {/* Cargo Types */}
+    
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <Package className="w-6 h-6 text-primary mr-3" />
@@ -259,7 +257,7 @@ const CreateTripPage = () => {
           </div>
         </Card>
 
-        {/* Pricing */}
+        
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <Euro className="w-6 h-6 text-primary mr-3" />
@@ -268,7 +266,7 @@ const CreateTripPage = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Input
-              label="Prix par kg (€)"
+              label="Prix par kg (DH)"
               type="number"
               step="0.01"
               placeholder="2.50"
@@ -290,7 +288,6 @@ const CreateTripPage = () => {
           </div>
         </Card>
 
-        {/* Submit */}
         <div className="flex items-center justify-end space-x-4">
           <Button variant="outline" onClick={() => navigate(-1)}>
             Annuler
