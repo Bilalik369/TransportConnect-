@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { useQuery } from "react-query"
+import { useQuery } from "@tanstack/react-query"
+
 import { motion } from "framer-motion"
 import { Plus, Search, Filter, MapPin, Calendar, Weight, Star, Truck } from "lucide-react"
 import { useAuth } from "../../contexts/AuthContext"
@@ -26,19 +27,17 @@ const TripsPage = () => {
     data: tripsData,
     isLoading,
     refetch,
-  } = useQuery(
-    ["trips", filters],
-    () => {
+  } = useQuery({
+    queryKey: ["trips", filters],
+    queryFn: () => {
       if (user?.role === "conducteur") {
         return tripsAPI.getMyTrips(filters)
       } else {
         return tripsAPI.getTrips(filters)
       }
     },
-    {
-      enabled: !!user,
-    },
-  )
+    enabled: !!user,
+  })
 
   const trips = tripsData?.data?.trips || []
 
@@ -107,7 +106,6 @@ const TripsPage = () => {
         )}
       </div>
 
-     
       <Card className="p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-text-primary">Filtres de recherche</h3>
@@ -188,7 +186,6 @@ const TripsPage = () => {
         </motion.div>
       </Card>
 
-   
       <div>
         {isLoading ? (
           <div className="flex justify-center py-12">
@@ -204,7 +201,6 @@ const TripsPage = () => {
                 transition={{ duration: 0.3 }}
               >
                 <Card className="p-6 cursor-pointer" onClick={() => {}}>
-                
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-3">
                       <div className="flex items-center space-x-2">
@@ -222,7 +218,6 @@ const TripsPage = () => {
                     </div>
                   </div>
 
-                 
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="flex items-center space-x-2">
                       <Calendar className="w-4 h-4 text-text-secondary" />
@@ -236,7 +231,6 @@ const TripsPage = () => {
                     </div>
                   </div>
 
-                
                   <div className="mb-4">
                     <div className="flex flex-wrap gap-2">
                       {trip.acceptedCargoTypes.slice(0, 3).map((type) => (
@@ -255,7 +249,6 @@ const TripsPage = () => {
                     </div>
                   </div>
 
-            
                   {user?.role !== "conducteur" && (
                     <div className="flex items-center justify-between pt-4 border-t">
                       <div className="flex items-center space-x-3">

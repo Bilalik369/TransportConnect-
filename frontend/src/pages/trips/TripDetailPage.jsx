@@ -1,5 +1,5 @@
 import { useParams, useNavigate, Link } from "react-router-dom"
-import { useQuery, useMutation, useQueryClient } from "react-query"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Star } from "lucide-react"
 import { tripsAPI } from "../../services/api"
 import { useAuth } from "../../contexts/AuthContext"

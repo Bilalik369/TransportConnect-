@@ -1,7 +1,7 @@
 "use client"
 
 import { useParams, useNavigate } from "react-router-dom"
-import { useQuery, useMutation, useQueryClient } from "react-query"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Package, MapPin, Clock, CheckCircle, XCircle, MessageCircle } from "lucide-react"
 import { requestsAPI } from "../../services/api"
 import { useAuth } from "../../contexts/AuthContext"

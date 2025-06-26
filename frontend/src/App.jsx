@@ -1,27 +1,25 @@
-import { Routes, Route, Navigate } from "react-router-dom"
-import { AuthProvider } from "./contexts/AuthContext"
-import { SocketProvider } from "./contexts/SocketContext"
-import ProtectedRoute from "./components/ProtectedRoute"
-import PublicRoute from "./components/PublicRoute"
+import { Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
+import { SocketProvider } from "./contexts/SocketContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
 
+import WelcomePage from "./pages/auth/WelcomePage";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
+import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 
-import WelcomePage from "./pages/auth/WelcomePage"
-import LoginPage from "./pages/auth/LoginPage"
-import RegisterPage from "./pages/auth/RegisterPage"
-import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage"
-
-
-import DashboardPage from "./pages/dashboard/DashboardPage"
-import TripsPage from "./pages/trips/TripsPage"
-import TripDetailPage from "./pages/trips/TripDetailPage"
-import CreateTripPage from "./pages/trips/CreateTripPage"
-import RequestsPage from "./pages/requests/RequestsPage"
-import RequestDetailPage from "./pages/requests/RequestDetailPage"
-import CreateRequestPage from "./pages/requests/CreateRequestPage"
-// import ChatPage from "./pages/chat/ChatPage"
-// import ChatDetailPage from "./pages/chat/ChatDetailPage"
+import DashboardPage from "./pages/dashboard/DashboardPage";
+import TripsPage from "./pages/trips/TripsPage";
+import TripDetailPage from "./pages/trips/TripDetailPage";
+import CreateTripPage from "./pages/trips/CreateTripPage";
+import RequestsPage from "./pages/requests/RequestsPage";
+import RequestDetailPage from "./pages/requests/RequestDetailPage";
+import CreateRequestPage from "./pages/requests/CreateRequestPage";
+import ChatPage from "./pages/chat/chatPage";
+import ChatDetailPage from "./pages/chat/ChatdetailPage";
 // import ProfilePage from "./pages/profile/ProfilePage"
-// import AdminPage from "./pages/admin/AdminPage"
+import AdminPage from "./pages/admin/adminPage";
 
 function App() {
   return (
@@ -125,23 +123,22 @@ function App() {
               }
             />
 
-           
-            {/* <Route
+            <Route
               path="/chat"
               element={
                 <ProtectedRoute>
                   <ChatPage />
                 </ProtectedRoute>
               }
-            /> */}
-            {/* <Route
+            />
+            <Route
               path="/chat/:requestId"
               element={
                 <ProtectedRoute>
                   <ChatDetailPage />
                 </ProtectedRoute>
               }
-            /> */}
+            />
 
             {/* Profile */}
             {/* <Route
@@ -154,14 +151,14 @@ function App() {
             /> */}
 
             {/* Admin */}
-            {/* <Route
+            <Route
               path="/admin"
               element={
                 <ProtectedRoute roles={["admin"]}>
                   <AdminPage />
                 </ProtectedRoute>
               }
-            /> */}
+            />
 
             {/* Redirect */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
@@ -169,7 +166,7 @@ function App() {
         </div>
       </SocketProvider>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;

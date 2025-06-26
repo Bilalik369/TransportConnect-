@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { ArrowLeft, MapPin, Calendar, Weight, Euro, Package } from "lucide-react"
-import { useMutation, useQueryClient } from "react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { tripsAPI } from "../../services/api"
 import Button from "../../components/ui/Button"
 import Input from "../../components/ui/Input"
@@ -22,9 +22,10 @@ const CreateTripPage = () => {
     watch,
   } = useForm()
 
-  const createTripMutation = useMutation(tripsAPI.createTrip, {
+  const createTripMutation = useMutation({
+    mutationFn: tripsAPI.createTrip,
     onSuccess: () => {
-      queryClient.invalidateQueries("trips")
+      queryClient.invalidateQueries({ queryKey: ["trips"] })
       toast.success("Trajet créé avec succès !")
       navigate("/trips")
     },
@@ -67,24 +68,27 @@ const CreateTripPage = () => {
   }
 
   const toggleCargoType = (type) => {
-    setSelectedCargoTypes((prev) => (prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]))
+    setSelectedCargoTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+    )
   }
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-     
       <div className="flex items-center mb-8">
         <Button variant="ghost" onClick={() => navigate(-1)} className="mr-4">
           <ArrowLeft className="w-4 h-4" />
         </Button>
         <div>
           <h1 className="text-3xl font-bold text-text-primary">Créer un nouveau trajet</h1>
-          <p className="text-text-secondary mt-1">Remplissez les informations de votre trajet</p>
+          <p className="text-text-secondary mt-1">
+            Remplissez les informations de votre trajet
+          </p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-
+        {/* Itinéraire */}
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <MapPin className="w-6 h-6 text-primary mr-3" />
@@ -114,19 +118,23 @@ const CreateTripPage = () => {
                 label="Ville de destination"
                 placeholder="Lyon"
                 error={errors.destinationCity?.message}
-                {...register("destinationCity", { required: "La ville de destination est requise" })}
+                {...register("destinationCity", {
+                  required: "La ville de destination est requise",
+                })}
               />
               <Input
                 label="Adresse de destination"
                 placeholder="456 Avenue de la République"
                 error={errors.destinationAddress?.message}
-                {...register("destinationAddress", { required: "L'adresse de destination est requise" })}
+                {...register("destinationAddress", {
+                  required: "L'adresse de destination est requise",
+                })}
               />
             </div>
           </div>
         </Card>
 
-      
+        {/* Horaires */}
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <Calendar className="w-6 h-6 text-primary mr-3" />
@@ -141,13 +149,17 @@ const CreateTripPage = () => {
                   label="Date de départ"
                   type="date"
                   error={errors.departureDate?.message}
-                  {...register("departureDate", { required: "La date de départ est requise" })}
+                  {...register("departureDate", {
+                    required: "La date de départ est requise",
+                  })}
                 />
                 <Input
                   label="Heure de départ"
                   type="time"
                   error={errors.departureTime?.message}
-                  {...register("departureTime", { required: "L'heure de départ est requise" })}
+                  {...register("departureTime", {
+                    required: "L'heure de départ est requise",
+                  })}
                 />
               </div>
             </div>
@@ -159,20 +171,24 @@ const CreateTripPage = () => {
                   label="Date d'arrivée"
                   type="date"
                   error={errors.arrivalDate?.message}
-                  {...register("arrivalDate", { required: "La date d'arrivée est requise" })}
+                  {...register("arrivalDate", {
+                    required: "La date d'arrivée est requise",
+                  })}
                 />
                 <Input
                   label="Heure d'arrivée"
                   type="time"
                   error={errors.arrivalTime?.message}
-                  {...register("arrivalTime", { required: "L'heure d'arrivée est requise" })}
+                  {...register("arrivalTime", {
+                    required: "L'heure d'arrivée est requise",
+                  })}
                 />
               </div>
             </div>
           </div>
         </Card>
 
-     
+        {/* Capacité disponible */}
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <Weight className="w-6 h-6 text-primary mr-3" />
@@ -194,7 +210,9 @@ const CreateTripPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-text-primary mb-2">Dimensions (cm)</label>
+              <label className="block text-sm font-semibold text-text-primary mb-2">
+                Dimensions (cm)
+              </label>
               <div className="grid grid-cols-3 gap-2">
                 <Input
                   placeholder="Longueur"
@@ -228,11 +246,13 @@ const CreateTripPage = () => {
           </div>
         </Card>
 
-    
+   
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <Package className="w-6 h-6 text-primary mr-3" />
-            <h2 className="text-xl font-semibold text-text-primary">Types de cargaison acceptés</h2>
+            <h2 className="text-xl font-semibold text-text-primary">
+              Types de cargaison acceptés
+            </h2>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -251,13 +271,14 @@ const CreateTripPage = () => {
                   checked={selectedCargoTypes.includes(type.value)}
                   onChange={() => toggleCargoType(type.value)}
                 />
-                <span className="text-sm font-medium text-text-primary">{type.label}</span>
+                <span className="text-sm font-medium text-text-primary">
+                  {type.label}
+                </span>
               </label>
             ))}
           </div>
         </Card>
 
-        
         <Card className="p-6">
           <div className="flex items-center mb-6">
             <Euro className="w-6 h-6 text-primary mr-3" />
@@ -278,7 +299,9 @@ const CreateTripPage = () => {
             />
 
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-text-primary">Description (optionnel)</label>
+              <label className="block text-sm font-semibold text-text-primary">
+                Description (optionnel)
+              </label>
               <textarea
                 className="input-field min-h-[100px] resize-none"
                 placeholder="Informations supplémentaires sur votre trajet..."

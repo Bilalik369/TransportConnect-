@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
-import { useQuery, useMutation, useQueryClient } from "react-query"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Package, MapPin, User, Euro } from "lucide-react"
 import { tripsAPI, requestsAPI } from "../../services/api"
 import Button from "../../components/ui/Button"

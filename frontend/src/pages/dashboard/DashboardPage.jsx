@@ -1,7 +1,17 @@
 import { Link } from "react-router-dom"
-import { useQuery } from "react-query"
+import { useQuery } from "@tanstack/react-query"
 import { motion } from "framer-motion"
-import { Plus, Search, Package, MessageCircle, TrendingUp, Clock, MapPin, Star, ArrowRight } from "lucide-react"
+import {
+  Plus,
+  Search,
+  Package,
+  MessageCircle,
+  TrendingUp,
+  Clock,
+  MapPin,
+  Star,
+  ArrowRight,
+} from "lucide-react"
 import { useAuth } from "../../contexts/AuthContext"
 import { tripsAPI, requestsAPI, usersAPI } from "../../services/api"
 import Card from "../../components/ui/Card"
@@ -11,14 +21,28 @@ import LoadingSpinner from "../../components/ui/LoadingSpinner"
 const DashboardPage = () => {
   const { user } = useAuth()
 
+  const { data: stats } = useQuery({
+    queryKey: ["user-stats"],
+    queryFn: usersAPI.getStats,
+  })
 
-  const { data: stats } = useQuery("user-stats", usersAPI.getStats)
-  const { data: recentTrips, isLoading: tripsLoading } = useQuery("recent-trips", () =>
-    user?.role === "conducteur" ? tripsAPI.getMyTrips({ limit: 5 }) : tripsAPI.getTrips({ limit: 5 }),
-  )
-  const { data: recentRequests, isLoading: requestsLoading } = useQuery("recent-requests", () =>
-    user?.role === "conducteur" ? requestsAPI.getReceivedRequests({ limit: 5 }) : requestsAPI.getRequests({ limit: 5 }),
-  )
+  const { data: recentTrips, isLoading: tripsLoading } = useQuery({
+    queryKey: ["recent-trips"],
+    queryFn: () =>
+      user?.role === "conducteur"
+        ? tripsAPI.getMyTrips({ limit: 5 })
+        : tripsAPI.getTrips({ limit: 5 }),
+    enabled: !!user?.role,
+  })
+
+  const { data: recentRequests, isLoading: requestsLoading } = useQuery({
+    queryKey: ["recent-requests"],
+    queryFn: () =>
+      user?.role === "conducteur"
+        ? requestsAPI.getReceivedRequests({ limit: 5 })
+        : requestsAPI.getRequests({ limit: 5 }),
+    enabled: !!user?.role,
+  })
 
   const quickActions =
     user?.role === "conducteur"
@@ -92,7 +116,7 @@ const DashboardPage = () => {
 
   return (
     <div className="p-6 space-y-8">
-      
+      {/* Welcome Card */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <div className="bg-gradient-to-r from-primary to-text-secondary rounded-2xl p-8 text-white">
           <h1 className="text-3xl font-bold mb-2">Bonjour {user?.firstName} ! 👋</h1>
@@ -114,14 +138,14 @@ const DashboardPage = () => {
         </div>
       </motion.div>
 
-     
+      {/* Statistiques */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
         className="grid grid-cols-1 md:grid-cols-3 gap-6"
       >
-        {statsCards.map((stat, index) => {
+        {statsCards.map((stat) => {
           const Icon = stat.icon
           return (
             <Card key={stat.title} className="text-center">
@@ -137,7 +161,7 @@ const DashboardPage = () => {
         })}
       </motion.div>
 
-      {/* Quick Actions */}
+      {/* Actions rapides */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -145,7 +169,7 @@ const DashboardPage = () => {
       >
         <h2 className="text-2xl font-bold text-text-primary mb-6">Actions rapides</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {quickActions.map((action, index) => {
+          {quickActions.map((action) => {
             const Icon = action.icon
             return (
               <Link key={action.title} to={action.href}>
@@ -164,14 +188,10 @@ const DashboardPage = () => {
         </div>
       </motion.div>
 
-      {/* Recent Activity */}
+      {/* Activité récente */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Recent Trips */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+        {/* Trajets récents */}
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 }}>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-text-primary">
               {user?.role === "conducteur" ? "Mes trajets récents" : "Trajets disponibles"}
@@ -196,30 +216,12 @@ const DashboardPage = () => {
                         {trip.departure.city} → {trip.destination.city}
                       </span>
                     </div>
-                    <span className="text-lg font-bold text-primary">{trip.pricePerKg}€/kg</span>
+                    <span className="text-lg font-bold text-primary">{trip.pricePerKg}DH/kg</span>
                   </div>
-
                   <div className="flex items-center justify-between text-sm text-text-secondary">
                     <span>{new Date(trip.departureDate).toLocaleDateString("fr-FR")}</span>
                     <span>{trip.availableCapacity.weight}kg disponible</span>
                   </div>
-
-                  {user?.role !== "conducteur" && (
-                    <div className="flex items-center mt-3 space-x-2">
-                      <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">{trip.driver?.firstName?.charAt(0)}</span>
-                      </div>
-                      <span className="text-sm text-text-primary">
-                        {trip.driver?.firstName} {trip.driver?.lastName}
-                      </span>
-                      <div className="flex items-center">
-                        <Star className="w-3 h-3 text-warning fill-current" />
-                        <span className="text-xs text-text-secondary ml-1">
-                          {trip.driver?.stats?.averageRating?.toFixed(1) || "N/A"}
-                        </span>
-                      </div>
-                    </div>
-                  )}
                 </Card>
               ))
             ) : (
@@ -231,12 +233,8 @@ const DashboardPage = () => {
           </div>
         </motion.div>
 
-        {/* Recent Requests */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
+        {/* Demandes récentes */}
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-text-primary">
               {user?.role === "conducteur" ? "Demandes reçues" : "Mes demandes"}
@@ -266,27 +264,25 @@ const DashboardPage = () => {
                         request.status === "pending"
                           ? "bg-warning bg-opacity-20 text-warning"
                           : request.status === "accepted"
-                            ? "bg-success bg-opacity-20 text-success"
-                            : request.status === "rejected"
-                              ? "bg-error bg-opacity-20 text-error"
-                              : "bg-placeholder-text bg-opacity-20 text-placeholder-text"
+                          ? "bg-success bg-opacity-20 text-success"
+                          : request.status === "rejected"
+                          ? "bg-error bg-opacity-20 text-error"
+                          : "bg-placeholder-text bg-opacity-20 text-placeholder-text"
                       }`}
                     >
                       {request.status === "pending"
                         ? "En attente"
                         : request.status === "accepted"
-                          ? "Acceptée"
-                          : request.status === "rejected"
-                            ? "Refusée"
-                            : request.status}
+                        ? "Acceptée"
+                        : request.status === "rejected"
+                        ? "Refusée"
+                        : request.status}
                     </span>
                   </div>
-
                   <div className="flex items-center justify-between text-sm text-text-secondary">
                     <span>{request.cargo?.weight}kg</span>
-                    <span>{request.price}€</span>
+                    <span>{request.price}DH</span>
                   </div>
-
                   <div className="flex items-center justify-between text-sm text-text-secondary mt-2">
                     <span>
                       {request.pickup?.city} → {request.delivery?.city}

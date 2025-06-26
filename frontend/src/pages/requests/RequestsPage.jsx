@@ -1,8 +1,16 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { useQuery } from "react-query"
+import { useQuery } from "@tanstack/react-query"
 import { motion } from "framer-motion"
-import { Package, Clock, CheckCircle, XCircle, Truck, MessageCircle, Eye } from "lucide-react"
+import {
+  Package,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Truck,
+  MessageCircle,
+  Eye,
+} from "lucide-react"
 import { useAuth } from "../../contexts/AuthContext"
 import { requestsAPI } from "../../services/api"
 import Card from "../../components/ui/Card"
@@ -13,19 +21,21 @@ const RequestsPage = () => {
   const { user } = useAuth()
   const [activeTab, setActiveTab] = useState("all")
 
-  const { data: requestsData, isLoading } = useQuery(
-    ["requests", activeTab],
-    () => {
+  const { data: requestsData, isLoading } = useQuery({
+    queryKey: ["requests", activeTab],
+    queryFn: () => {
       if (user?.role === "conducteur") {
-        return requestsAPI.getReceivedRequests({ status: activeTab === "all" ? "" : activeTab })
+        return requestsAPI.getReceivedRequests({
+          status: activeTab === "all" ? "" : activeTab,
+        })
       } else {
-        return requestsAPI.getRequests({ status: activeTab === "all" ? "" : activeTab })
+        return requestsAPI.getRequests({
+          status: activeTab === "all" ? "" : activeTab,
+        })
       }
     },
-    {
-      enabled: !!user,
-    },
-  )
+    enabled: !!user,
+  })
 
   const requests = requestsData?.data?.requests || []
 
@@ -96,7 +106,6 @@ const RequestsPage = () => {
 
   return (
     <div className="p-6 space-y-6">
-     
       <div>
         <h1 className="text-3xl font-bold text-text-primary">
           {user?.role === "conducteur" ? "Demandes reçues" : "Mes demandes"}
@@ -108,7 +117,6 @@ const RequestsPage = () => {
         </p>
       </div>
 
-     
       <Card className="p-4">
         <div className="flex flex-wrap gap-2">
           {tabs.map((tab) => (
@@ -127,7 +135,6 @@ const RequestsPage = () => {
         </div>
       </Card>
 
-     
       <div>
         {isLoading ? (
           <div className="flex justify-center py-12">
@@ -148,7 +155,9 @@ const RequestsPage = () => {
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-2">
-                          <h3 className="text-lg font-semibold text-text-primary">{request.cargo.description}</h3>
+                          <h3 className="text-lg font-semibold text-text-primary">
+                            {request.cargo.description}
+                          </h3>
                           <div
                             className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(request.status)}`}
                           >
